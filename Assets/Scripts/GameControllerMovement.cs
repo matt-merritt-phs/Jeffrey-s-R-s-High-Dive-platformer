@@ -12,12 +12,19 @@ public class GameControllerMovement : MonoBehaviour
     public float turnSpeed;
 
     public bool isgrounded; 
+    
+    public Vector3 spawnPosition;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+
+
+
     {
         rb = GetComponent<Rigidbody>();
+
+        spawnPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -62,7 +69,12 @@ public class GameControllerMovement : MonoBehaviour
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
-        
+        //Respawn
+        if (transform.position.y < 0)
+        {
+            rb.position = spawnPosition;
+        }
+       
 
     }
     void OnCollisionEnter(Collision collision)
@@ -80,6 +92,15 @@ public class GameControllerMovement : MonoBehaviour
         {
             isgrounded = true;
         }
+        
+        
+        if (collision.gameObject.tag == "Hazard") 
+        {
+            rb.position = spawnPosition;
+            Debug.Log("hurt");
+        }
+
+        
     }
 
     void OnCollisionExit(Collision collision)
@@ -88,6 +109,7 @@ public class GameControllerMovement : MonoBehaviour
         {
             isgrounded = false;
         }
+
 
     }
    
