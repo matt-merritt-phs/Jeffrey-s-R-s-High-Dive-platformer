@@ -14,6 +14,7 @@ public class GameControllerMovement : MonoBehaviour
     public bool isgrounded; 
     
     public Vector3 spawnPosition;
+    public bool died = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,7 +76,18 @@ public class GameControllerMovement : MonoBehaviour
             rb.position = spawnPosition;
         }
        
+        
 
+    }
+
+    private void FixedUpdate()
+    {
+        if (died)
+        {
+            Debug.Log("You died");
+            rb.position = spawnPosition;
+            died = false;
+        }
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -96,7 +108,8 @@ public class GameControllerMovement : MonoBehaviour
         
         if (collision.gameObject.tag == "Hazard") 
         {
-            rb.position = spawnPosition;
+            died = true;
+            //rb.position = spawnPosition;
             Debug.Log("hurt");
         }
 
